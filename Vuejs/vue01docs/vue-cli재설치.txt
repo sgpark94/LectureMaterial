@@ -1,0 +1,21 @@
+$ vue -V
+@vue/cli 5.0.1
+
+$ npm uninstall -g @vue/cli
+
+$ vue -V
+bash: /c/DevTool/nodejs/node/vue: No such file or directory
+
+$ npm install -g @vue/cli@4.5.16 --force
+
+$ vue -V
+@vue/cli 4.5.16
+
+$ rm -rf ./node_modules/
+
+$ rm package-lock.json
+
+$ npm install
+
+$ npm run serve
+
