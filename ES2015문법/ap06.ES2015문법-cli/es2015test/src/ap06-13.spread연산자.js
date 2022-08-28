@@ -2,7 +2,7 @@
 
     스프레드 사용법을 학습한다.
 
-    ES 5에서는
+    ES5에서는
     arguments 매개변수는 유사 배열 객체다.
         length 프로퍼티가 있다.
         Array  메서드를 사용할 수 없다.
@@ -14,8 +14,24 @@
         함수의 매개변수로 넘어오는 값들을 "배열"로 만든다.
 
     Spread 연산자는 ... 이다.
-        이터러블(iterable) 객체를 "개별" 요소로 분리
-        이터러블(iterable) 객체에는 Array, String, Map, Set 등이 있다.
+        이터러블(iterable)(덩어리) 객체를 "개별" 요소로 **분리**
+        이터러블(iterable) 객체에는 Object, Array, String, Map, Set 등이 있다.
         iterator를 생성해서 next()로 순회할 수 있는 자료구조가 이터러블
 
 */
+
+// 배열을 개별 변수로 만듬.
+const cities = ['서울', '부산', '제주'];
+const x = cities[0],
+  y = cities[1],
+  z = cities[2];
+
+// console.log(...cities);
+
+const east = ['U', 'K', 'T'],
+  west = ['N', 'C', 'G'];
+
+console.log(east.concat(west));
+
+const countries = [...east, ...west];
+console.log(countries);

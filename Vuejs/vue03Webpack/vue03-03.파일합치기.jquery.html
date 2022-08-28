@@ -63,8 +63,7 @@
         jQuery의 load 메서드를 이용하여 파일 결합의 의미를 실습한다.
         jQuery를 사용하여 index.html 에서 header.html 과 footer.html을 import 한다.
 
-
-        반드시 "Open with Live Server"로 실행해야 한다.
+        ** 반드시 "Open with Live Server"로 실행해야 한다. **
         왜나하면 ajax 를 이용해야 하기 때문.
         <img src="fileload.png" alt="" >
 
@@ -75,15 +74,32 @@
 
     <hr>
     <div>
+        <div class="header"></div>
         <div w3-include-header="header.html"></div>
         <section id="page1" data-role="page">
             <div class="content" data-role="content">
                 컨텐츠
             </div>
         </section>
+        <div class="footer"></div>
         <div w3-include-footer="footer.html"></div>
     </div>
+
+    <!-- vue 플러그인 임포트 (단축키 vueplugin)   -->
+    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js">/* vue 플러그인 임포트 */</script>
+    <script src="https://unpkg.com/vuex@3.6.2/dist/vuex.js"> /* vuex 플러그인 임포트 */</script>
+    <script src="https://unpkg.com/vue-router@3.5.4/dist/vue-router.js"> /* vue 라우터 플러그인 임포트 */</script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"> /* axios 플러그인 임포트 */</script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> /* jQuery 플러그인 임포트 */</script>
+    <script>
+        // 동적 파일 결합 -> 이벤트 처리가 어렵고 복잡하다. (안 되는 건 아니다.)
+        // 비동기 파일 결합은 live server로 실행해야만 가능.
+        // <div w3-include-header="header.html"></div>
+        $('div[w3-include-header]').load('header.html');
+        $('.header').load('header.html');
+        // <div w3-include-footer="footer.html"></div>
+        $('div[w3-include-footer]').load('footer.html');
+        $('.footer').load('footer.html');
+    </script>
 </body>
-
 </html>
-

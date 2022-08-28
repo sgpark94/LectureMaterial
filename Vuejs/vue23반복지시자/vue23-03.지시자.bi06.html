@@ -48,7 +48,6 @@
     <hr>
 
     <div id="app" class="col-md-10 offset-md-1">
-
         <button v-on:click='btnAddClick'>추가</button>
         <label for="">이름</label><input v-model:value="name">
         <label for="">전화번호</label><input v-model:value="tel">
@@ -64,20 +63,67 @@
                 </tr>
             </thead>
             <tbody id="contacts">
-                <tr v-for="(contact, i) in contacts" v-bind:key="i">
-                    <td>{{i+1}}</td>
-                    <td>{{contact.name}}</td>
-                    <td>{{contact.tel}}</td>
-                    <td>{{contact.address}}</td>
+                <tr v-for="(contact, i) in contacts" :key="i">
+                    <td>{{ i+1 }}</td>
+                    <td>{{ contact.name }}</td>
+                    <td>{{ contact.tel }}</td>
+                    <td>{{ contact.address }}</td>
                 </tr>
             </tbody>
         </table>
     </div>
+
+    <!-- vue 플러그인 임포트   -->
+    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js"></script>
+    <script>
+        new Vue({
+            /* edtmc^2w */
+            el: '#app',
+            data: {
+                /* 인스턴스 안에서 사용되는 변수 등록, 공유 변수 */
+                contacts: [
+                    { name: '설현', tel: '010-3456-8200', address: '서현' },
+                    { name: '혜리', tel: '010-3456-8299', address: '서리' }
+                ],
+                name: '',
+                tel: '',
+                address: '',
+            },
+            methods: {
+                /* 이벤트 핸들러 등록 + 일반 함수 */
+                btnAddClick() {
+                    // Q. this.contacts 와 this.$data.contacts 와 같은 것인가?
+                    // const obj = this.contacts.push({
+                    //     name: this.name,
+                    //     tel: this.tel,
+                    //     address: this.address,
+                    // });
+                    // this.$data.contacts.push(obj);
+                    // push 가 화면에 적용 안되는 케이스도 있으므로 this.$set 으로 넣는 방법으로 하는 것을 추천하심.
+
+                    const obj = {
+                        name: this.name,
+                        tel: this.tel,
+                        address: this.address
+                    };
+                    // this.$data.contacts[this.contacts.length] = obj;
+                    this.$set(this.$data.contacts, this.contacts.length+'', obj);
+                    // this.contacts[this.contacts.length] = {
+                    //     name: this.name,
+                    //     tel: this.tel,
+                    //     address: this.address,
+                    // }
+
+                    this.name = '';
+                    this.tel = '';
+                    this.address = '';
+                }
+            },
+            updated() {
+                console.log('updated');
+            }
+        });
+
+    </script>
 </body>
-
 </html>
-
-<!-- vue template -->
-
-
-<!-- vue 플러그인 임포트   -->
