@@ -65,9 +65,54 @@
     </xmp>
     <!-- div#app을 클릭하면 state값을 변경하는 메소드를 구성하세요.
         ready => active => done => ready -->
-    <div id="app" v-bind:class="state" v-on:click="change">
+    <div id="app" :class="state" @click="change">
         {{msg}}
     </div>
+
+    <!-- vue 플러그인 임포트   -->
+    <script src="https://unpkg.com/vue@2.7.8/dist/vue.js">/* vue 플러그인 임포트 */</script>
+    <script>
+        new Vue({
+            /* edtmc^2w */
+            el: '#app',
+            data: {
+                /* 인스턴스 안에서 사용되는 변수 등록, 공유 변수 */
+                state: 'ready',
+            },
+            //template: ``,
+            methods: {
+                /* 이벤트 핸들러 등록 + 일반 함수 */
+                change(e) {
+                    console.log(e.target);
+                    if (this.state === 'ready') this.state = 'active'
+                    else if (this.state === 'active') this.state = 'done'
+                    else this.state = 'ready'
+                }
+            },
+            components: {
+                /* 전역 컴포넌트는 등록하지 않는다. */
+                /* 지역 컴포넌트나 파일 컴포넌트이면 등록해야 한다 . 예시) "태그명" : 컴포넌트명 */
+
+            },
+            computed: {
+                /* 자동처리 + 동기식. 변수명이 메서드 명이다. 메서드로 작성. return 필수.  data 와 공존 불가 */
+                msg() { // state 값 변화에 따라 같이 변화하는 파생 변수!
+                    return this.state;
+                }
+            },
+            watch: {
+                /* 자동처리 + 비동기식. data 에 등록된 프로퍼티(변수) 모니터링. 메서드로 작성. 매개변수 필수. 외부 api 호출을 위해서 사용 */
+
+            },
+            mounted() {
+                console.log("mounted");
+            },
+            updated() {
+                console.log("updated");
+            },
+        });
+
+    </script>
 </body>
 
 </html>
