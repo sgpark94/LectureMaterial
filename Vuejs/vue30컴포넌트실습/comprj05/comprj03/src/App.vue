@@ -4,7 +4,9 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
       <router-link to="/vue3103">view3103</router-link> |
-      <router-link to="/vue3104">view3104</router-link>
+      <router-link to="/vue3104">view3104</router-link> |
+      <router-link to="/vue31ex">view31ex</router-link> |
+      <router-link to="/vue3403">view3403</router-link>
     </nav>
     <router-view />
   </div>
