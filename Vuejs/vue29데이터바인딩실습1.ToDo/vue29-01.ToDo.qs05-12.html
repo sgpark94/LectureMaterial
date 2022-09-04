@@ -334,7 +334,7 @@
                     console.log(e.target);
                     // todoItems = [];
                     //        this.$data.todoItems   = [];
-                    this.$set(this.$data, 'todoItems', []);
+                    this.$set(this, 'todoItems', []);
                 },
                 checked(done) {
                     if (done) return 'checked'; // class binding
