@@ -110,19 +110,19 @@
             4.4 TodoFooter 컴포넌트 버튼 클릭시 이벤트 발신 기능을 추가한다.
                 this.$emit('clear-all', null);
 
-        5. TodoInput 컴포넌트 만들고 컴포넌트 등록하고 태그 작성한다.
-            5.1 TodoInput 컴포넌트 만든다.
-            5.2 TodoInput 컴포넌트를 인스턴스에 등록한다.
-            5.3 TodoInput 컴포넌트 태그를 Todo 컴포넌트의 템플릿에 등록한다.
-            5.4 TodoInput 컴포넌트 버튼 클릭시 이벤트 발신 기능을 추가한다.
-                this.$emit('add-todo', 넘길값);
-            5.5 TodoInput 컴포넌트의 input 태그에 값을 초기화
+        5. TodoList 컴포넌트 만들고 컴포넌트 등록하고 태그 작성한다.
+            5.1 TodoList 컴포넌트 만든다.
+            5.2 TodoList 컴포넌트를 인스턴스에 등록한다.
+            5.3 TodoList 컴포넌트 태그를 Todo 컴포넌트의 템플릿에 등록한다.
+            5.4 TodoList 컴포넌트 이벤트 발신 기능을 작성한다.
 
-        6. TodoList 컴포넌트 만들고 컴포넌트 등록하고 태그 작성한다.
-            6.1 TodoList 컴포넌트 만든다.
-            6.2 TodoList 컴포넌트를 인스턴스에 등록한다.
-            6.3 TodoList 컴포넌트 태그를 Todo 컴포넌트의 템플릿에 등록한다.
-            6.4 TodoList 컴포넌트 이벤트 발신 기능을 작성한다.
+        6.TodoInput 컴포넌트 만들고 컴포넌트 등록하고 태그 작성한다.
+            6.1 TodoInput 컴포넌트 만든다.
+            6.2 TodoInput 컴포넌트를 인스턴스에 등록한다.
+            6.3 TodoInput 컴포넌트 태그를 Todo 컴포넌트의 템플릿에 등록한다.
+            6.4 TodoInput 컴포넌트 버튼 클릭시 이벤트 발신 기능을 추가한다.
+                this.$emit('add-todo', 넘길값);
+            6.5 TodoInput 컴포넌트의 input 태그에 값을 초기화
 
     ##################################
     # Vue-CLI 학습하기
@@ -508,7 +508,7 @@
             vue61ToDo/1차/TodoHeader.vue 내용을 복사하여 붙여넣기
 
         step 7-2-2. src/components/todo/TodoHeader.vue  에 추가
-            < script>
+            <script>
             export default {
                 /* pdtmc^2w */
                 props: []
@@ -540,7 +540,7 @@
         step 7-3-1. src/components/todo/TodoFooter.vue 에 style 과 html 추가
             vue61ToDo/1차/TodoFooter.vue 내용을 복사하여 붙여넣기
         step 7-3-2. src/components/todo/TodoFooter.vue  에 추가
-            < script>
+            <script>
             export default {
                 /* pdtmc^2w */
                 props: [],
@@ -559,7 +559,7 @@
                     <TodoHeader></TodoHeader>
 
                     <!-- TodoFooter -->
-                    <TodoFooter v-on:clearAll="clearAll"></TodoFooter>
+                    <TodoFooter @clearAll="clearAll"></TodoFooter>
                 </div>
             </template>
 
@@ -569,6 +569,11 @@
 
             export default {
                 // ... 중략
+                methds: {
+                    clearAll() {
+                        debugger;
+                    },
+                },
                 components : {
                     TodoHeader: TodoHeader,
                     TodoFooter: TodoFooter,
@@ -604,10 +609,10 @@
                     <TodoHeader></TodoHeader>
 
                     <!-- TodoInput -->
-                    <TodoInput v-on:addTodo="addTodo"></TodoInput>
+                    <TodoInput @addTodo="addTodo"></TodoInput>
 
                     <!-- TodoFooter -->
-                    <TodoFooter v-on:clearAll="clearAll"></TodoFooter>
+                    <TodoFooter @clearAll="clearAll"></TodoFooter>
                 </div>
             </template>
 
@@ -652,18 +657,18 @@
                     <TodoHeader></TodoHeader>
 
                     <!-- TodoInput -->
-                    <TodoInput v-on:addTodo="addTodo"></TodoInput>
+                    <TodoInput @addTodo="addTodo"></TodoInput>
 
                     <!-- TodoList -->
                     <TodoList
-                        v-bind:todoItems="todoItems"
-                        v-on:doneToggle="doneToggle"
-                        v-on:removeTodo="removeTodo"
+                        :todoItems="todoItems"
+                        @doneToggle="doneToggle"
+                        @removeTodo="removeTodo"
                     >
                     </TodoList>
 
                     <!-- TodoFooter -->
-                    <TodoFooter v-on:clearAll="clearAll"></TodoFooter>
+                    <TodoFooter @clearAll="clearAll"></TodoFooter>
                 </div>
             </template>
 
@@ -997,7 +1002,7 @@
         });
 
         step 10-2. src\views\TodoView.vue 수정
-        < script>
+        <script>
             import TodoHeader from "@/components/todo/TodoHeader.vue";
             import TodoInput from "@/components/todo/TodoInput.vue";
             import TodoList from "@/components/todo/TodoList.vue";
