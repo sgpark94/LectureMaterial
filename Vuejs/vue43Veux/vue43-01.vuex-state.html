@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vuex Sample</title>
+
+    <!-- CSS import -->
+    <link rel="stylesheet" href="../css/reset.css">
+
+</head>
+
+<body>
+    <xmp>
+    Vue-CLI 을 사용하여 Vuex 실습용 프로젝트를 만들어 본다.
+
+    ##################################
+    # Vue-CLI 학습하기
+    ##################################
+
+    Vue-CLI 구성요소
+        CLI코어: @vue/cli
+        CLI서비스: @vue/cli-service
+            웹팩
+            웹팩개발서버
+        CLI플러그인: @vue/cli
+            router
+            vuex
+            @vue/cli-plugin-babel
+            @vue/cli-plugin-eslint
+            @vue/cli-plugin-unit-jest
+
+    Vue-CLI 의 버전
+        2.x : <== 교재
+        3.x :
+        4.x :
+        5.x : <== 최신 버전
+
+
+    Vue-CLI 플러그인 추가
+        vue add 플러그인명.             예시) npx vue add vuex
+        npm install --save 플러그인명.  예시) npm install --save vuex
+
+
+    ##################################
+    2. Vue-CLI 프로젝트 생성 및 설정 작업
+    ##################################
+
+    step 2-03. node, npm 버전 확인
+        $ node -v
+        v16.16.0
+
+        $ npm -v
+        8.18.0
+
+        $ npx -v
+        8.18.0
+
+    step 2-04. 현재 폴더의 파일 목록 조회
+        $ ls
+        vue43-01.vuex-state.html  vue43-05-ex.vuex-counter.html
+
+    step 2-05. vuexprj01 프로젝트 생성. package.json 생성.
+        $ npx vue create vuexprj01
+        Vue CLI v5.0.8
+        ? Please pick a preset:
+          Default ([Vue 3] babel, eslint)
+          Default ([Vue 2] babel, eslint)
+        > Manually select features
+
+        ? Check the features needed for your project:
+        (*) Choose Vue version
+        (*) Babel
+        ( ) TypeScript
+        ( ) Progressive Web App (PWA) Support
+        (*) Router
+        (*) Vuex
+        ( ) CSS Pre-processors
+        (*) Linter / Formatter
+        ( ) Unit Testing
+        ( ) E2E Testing
+
+        ? Choose a version of Vue.js that you want to start the project with (Use arrow keys)
+        > 3.x
+          2.x
+
+        ? Use history mode for router? (Requires proper server setup for index fallback in production) (Y/n) Yes
+
+        ? Pick a linter / formatter config:
+          ESLint with error prevention only
+          ESLint + Airbnb config
+          ESLint + Standard config
+        > ESLint + Prettier
+
+        ? Pick additional lint features:
+        > (*) Lint on save
+          (*) Lint and fix on commit
+
+        ? Where do you prefer placing config for Babel, ESLint, etc.? (Use arrow keys)
+        > In dedicated config files
+          In package.json
+
+        ? Save this as a preset for future projects? (y/N) N
+
+        ...(중략)
+        $ cd vuexprj01
+        $ npm run serve
+
+
+    step 2-06. 현재 폴더의 파일 목록 조회.
+                프로젝터 폴더(vuexprj01) 존재 여부 확인.
+        $ ls
+        vuexprj01/  vue43-01.vuex-state.html  vue43-05-ex.vuex-counter.html
+
+
+    step 2-07. 생성된 프로젝트 폴더(vuexprj01)로 이동
+        $ cd vuexprj01/
+
+
+    step 2-08. 현재 폴더의 파일 목록 조회. package.json 이 보이면 정상.
+        $ ls
+        babel.config.js  lint-staged.config.js  package.json       public/    src/
+        jsconfig.json    node_modules/          package-lock.json  README.md  vue.config.js
+
+
+    step 02-09. router 라이브러리 추가
+        $ npx vue add router
+
+    step 02-10. vuex 라이브러리 추가
+        $ npx vue add vuex
+
+    step 2-11. 비동기 통신 axios 라이브러리 추가.
+        package.json 에 관련 정보가 추가 된다.
+        $ npm install --save axios
+
+    step 2-12.  프로젝트 실행 설정 vuexprj01/package.json 수정
+        a. 실행시 브라우저로 열기  ==>  --open
+        b. 실행 서버 포트 설정     ==>  --port 4000
+        c. 실행 호스트 설정        ==>  --host 127.0.0.1
+
+        "scripts": {
+            "serve": "vue-cli-service serve --open --port 4000 --host 127.0.0.1",
+            "build": "vue-cli-service build",
+            "lint": "vue-cli-service lint"
+        },
+
+    step 2-13. 현재 폴더의 파일 목록 조회. package.json 존재하는지 확인
+        $ ls
+
+    step 2-14. 서버 실행. package.json 이 있는 폴더에서 실행 해야 됨.
+        $ npm run serve
+
+        App running at:
+        - Local:   http://127.0.0.1:4000/
+        - Network: http://127.0.0.1:4000/
+
+        Note that the development build is not optimized.
+        To create a production build, run npm run build.
+
+        step 2-15. 배포할 파일을 생성.
+            빌드가 완료되면 dist/ 폴더가 생기고 관련 파일들이 생성됨.
+        $ npm run build
+
+        step 2-16. 코드 표준화 수행
+        $ npm run lint
+
+
+
+    ##################################
+    3. 프로젝트 디폴트 폴더 구조
+    ##################################
+
+        프로젝트
+        |-- dist                     # 빌드된 결과물이 저장되는 폴더. 서버로 배포되는 파일들.
+        |-- node_modules             # npm 모듈(패키지) 저장 폴더
+        |-- public                   # 배포 버전을 빌드할 때 사용하는 파일.
+        |   |-- index.html
+        |   `-- favion.ico
+        |-- src                      # 소스 코드 폴더
+        |   |-- assets               # 이미지, CSS, 기타 자원 파일
+        |   |   `--  logo.png
+        |   |-- components           # 컴포넌트
+        |   |   `--  HelloWorld.vue
+        |   |-- router               # 라우터
+        |   |   `--  index.js
+        |   |-- views                # 라우터 페이지
+        |   |   |--  About.vue
+        |   |   `--  Home.vue
+        |   |-- App.vue
+        |   `-- main.js
+        |-- .browserslistrc
+        |-- .eslintrc.js
+        |-- .gitignore
+        |-- .prettierrc
+        |-- babel.config.js
+        |-- jsconfig.json
+        |-- package.json
+        |-- README.md
+        `-- package.json
+
+
+    ##################################
+    4. 프로젝트 환경 설정
+        소요시간: 15분
+    ##################################
+
+    step 4-01. eslint 설정
+
+        ESLint의 핵심 구성 정보는 env, globals, rules 세 가지 영역으로 나누어져 구성되어 있습니다.
+        . env는 실행 환경에 대한 설정, 사전 전역 변수 설정. 브라우저, node, es6 환경이 활성화
+        . globals는 사용자가 추가하는 전역 변수 설정.
+        . extends 설치한 플러그인들의 적용과 설정에 관한 것들.
+        . plugins 설치한 플러그인들의 적용과 설정에 관한 것들.
+        . rules 설치한 플러그인들의 적용, 활성화 규칙 및 오류 설정에 관한 것들.
+
+        # package.json 파일이 있는지 확인
+        $ ls -a
+
+        .eslintrc.js 파일을 프로젝트 루트에 만들고 아래 내용을 추가한다.
+        $ touch .eslintrc.js
+
+        $ cat .eslintrc.js
+        module.exports = {
+            root: true,
+            env: {
+              node: true,
+              browser: true,
+              commonjs: true,
+              es2021: true,
+              jest: true,
+              es6: true,
+            },
+            extends: [
+                'plugin:vue/essential',
+                'eslint:recommended',
+                'plugin:prettier/recommended'
+            ],
+            parserOptions: {
+              parser: '@babel/eslint-parser',
+            },
+            plugins: ['prettier'],
+            rules: {
+              'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+              'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+              'prettier/prettier': ['error', { endOfLine: 'auto' }],
+              'linebreak-style': 'off',
+              'arrow-parens': ['error', 'always'],
+              'arrow-body-style': 'off',
+              'consistent-return': 'off',
+              'func-names': 'off',
+              'no-shadow': 'off',
+              'no-alert': 'off',
+              'no-var': 'error',
+              'no-unused-vars': 'off',
+              'no-param-reassign': ['error', { props: false }],
+            },
+        };
+
+
+    step 4-02. Prettier 설정
+
+        https://prettier.io/docs/en/options.html
+
+        .prettierrc 파일을 프로젝트 루트에 만들고 아래 내용을 추가한다.
+        $ touch .prettierrc
+
+        $ cat .prettierrc
+        {
+            "printWidth": 80,
+            "tabWidth": 2,
+            "singleQuote": true,
+            "semi": true,
+            "useTabs": false,
+            "trailingComma": "all",
+            "proseWrap": "always",
+            "requireConfig": false,
+            "bracketSpacing": true,
+            "jsxBracketSameLine": false,
+            "jsxSingleQuote": false,
+            "quoteProps": "as-needed",
+            "endOfLine": "crlf",
+        }
+
+
+    step 4-03. 프로젝트 전체 소스에 lint 적용
+    $ ls
+
+    $ npm run lint
+
+
+
+    ##################################
+    5. 프로젝트에 폴더 및 파일 추가
+    ##################################
+
+        프로젝트
+        |-- dist
+        |-- node_modules
+        |-- public
+        |   |-- favicon.ico
+        |   `-- index.html
+        |-- src
+        |   |-- assets
+        |   |   `-- logo.png
+        |   |-- components
+        |   |   |-- HelloWorld.vue
+        |   |   |-- vue4301
+        |   |   |   `-- Vue4301Comp.vue
+        |   |   |-- vue4305
+        |   |   |   |-- Vue4305Parent.vue
+        |   |   |   `-- Vue4305Child.vue
+        |   |   `-- vue4501
+        |   |       `-- Vue4501Comp.vue
+        |   |-- router
+        |   |   `-- index.js
+        |   |-- store
+        |   |   `-- index.js
+        |   |-- views
+        |   |   |-- AboutView.vue
+        |   |   |-- HomeView.vue
+        |   |   |-- Page4301View.vue
+        |   |   |-- Page4305View.vue
+        |   |   `-- Page4501View.vue
+        |   |-- App.vue
+        |   `-- main.js
+        |-- .browserslistrc
+        |-- .eslintrc.js
+        |-- .gitignore
+        |-- README.md
+        |-- babel.config.js
+        |-- jsconfig.json
+        |-- package.json
+        `-- vue.config.js
+
+        # package.json 존재 여부 확인
+        $ ls
+        babel.config.js  jsconfig.json  node_modules/  package.json  package-lock.json  public/  README.md  src/  vue.config.js
+
+
+        # 폴더 만들기
+        $ mkdir -p src/components/vue4301 \
+                   src/components/vue4305 \
+                   src/components/vue4501
+
+        # 페이지 컴포넌트 만들기
+        $ touch src/views/Page4301View.vue \
+                src/views/Page4305View.vue \
+                src/views/Page4501View.vue
+
+
+        # 프리젠테이션(화면) 컴포넌트 만들기
+        $ touch src/components/vue4301/Vue4301Comp.vue \
+                src/components/vue4305/Vue4305Parent.vue \
+                src/components/vue4305/Vue4305Child.vue \
+                src/components/vue4501/Vue4501Comp.vue
+
+
+    ##################################
+    vue4301 작업1. data 를 이용한 기본 기능 완성하기
+    ##################################
+
+    # package.json 파일 존재 여부 확인.
+    $ ls
+
+    작업1-1. 작업 폴더 및 파일 만들기
+    $ mkdir -p src/components/vue4301
+    $ touch src/views/Page4301View.vue
+    $ touch src/components/vue4301/Vue4301Comp.vue
+
+    src/App.vue 수정 ==> 페이지 링크 만들기
+
+    src/router/index.js  수정 ==> url 과 컴포넌트 연결
+
+    src/views/Page4301View.vue 생성
+        <template>
+            <div id="app">
+                <h2>vuex 를 사용하는 프로그램을 만들어 본다.</h2>
+                <Vue4301Comp></Vue4301Comp>
+            </div>
+        </template>
+
+    src/components/Vue4301Comp.vue 생성
+        <template>
+            <div id="app">
+                <h1>{{header}}</h1>
+                <h2>{{welcome}}</h2>
+                <h3>{{counter}}</h3>
+                <div>
+                    <input type="checkbox" v-model="callapi" />외부 api 호출
+                </div>
+                <button v-on:click="handlerIncrement">더해줘</button>
+                <button v-on:click="handlerDecrement">빼줘</button>
+            </div>
+        </template>
+
+    작업1-2. vue 인스턴스 기능 완성. data 프로퍼티 추가. <== 각자
+        {{header}} 에는  "Vuex 사용 앱" 가 나오게
+        {{welcome}} 에는 "HELLO WORLD" 가 나오게
+        {{counter}} 에는 0 이 나오게
+
+        data() {
+            /* 컴포넌트 안에서 사용되는 변수 등록. 개별 변수 */
+            return {
+              header: 'Vuex 사용 앱',
+              welcome: 'HELLO WORLD',
+              counter: 0,
+              callapi: false,
+            };
+          },
+
+    작업1-3. vue 인스턴스에 버튼 기능 완성. <== 각자
+        <button v-on:click="handlerIncrement">더해줘</button>
+        <button v-on:click="handlerDecrement">빼줘</button>
+
+        methods: {
+            /* 이벤트 핸들러 등록 + 일반 함수 */
+            handlerIncrement(e) {
+              console.log(e.target);
+              this.$data.counter = this.$data.counter + 1;
+            },
+            handlerDecrement(e) {
+              console.log(e.target);
+              this.$data.counter = this.$data.counter - 1;
+            },
+          },
+
+
+
+
+    ##################################
+    vue4301 작업2. Vuex 의 store 사용 설정하기
+    ##################################
+    작업2-1. store 디렉토리 생성
+        # package.json 파일이 있는지 확인.
+        $ ls
+        babel.config.js  jsconfig.json  node_modules/  package.json  package-lock.json  public/  README.md  src/  vue.config.js
+
+        # 디렉토리 생성
+        $ mkdir -p ./src/store/modules
+
+    작업2-2. store 파일 생성
+        $ touch ./src/store/index.js
+        $ touch ./src/store/modules/counterStore.js
+
+    작업2-3. counterStore.js
+        // 파일 위치: /src/store/modules/counterStore.js
+
+        const store = {
+            namespaced: true /* 모듈 store 여부 설정 */,
+            actions: {
+                /* 왜 actions를 사용하나? 비동기로 외부 함수 호출하기 위해서
+                 * actions 에는 메서드만 등록 가능하다.
+                 * 첫번째인자: 무조건 mutations로 고정.
+                 * 두번째인자: 값. store.dispatch()호출시 넘겨지는 값.
+                 */
+                set: function( mutations/* 고정 */, param ){
+                    mutations.commit("set", param );
+                },
+            },
+            mutations: {
+                /* 왜 mutations 를 사용하나? state 를 바꾸기 위해서
+                 * mutations 에는 메서드만 등록 가능하다.
+                 * 첫번째인자: 무조건 state 로 고정.
+                 * 두번째인자: 값. mutations.commit() 호출시 넘겨지는 값.
+                 * */
+                set: function(state/* 고정 */, param/* mutations.commit 호출시 넘겨지는 값 */){
+                    state.인자 = param;
+                },
+            },
+            state: {
+                /* vue인스턴스나 컴포넌트의 data 프로퍼티에 해당 */
+                인자: "STORE STATE",,
+            },
+            getters: {
+                /* state 변경 정보를 컴포넌트에 전달하는 역활.
+                 * 메서드로 만들어야 하며 메서드명은 state 의 이름을 그대로 사용
+                 * 첫번째인자: 무조건 state
+                 * 컴포넌트에서는 computed를 사용하여 store의 state 변경 정보를 자동으로 가져오게 된다.
+                 * 예시) message()=> store.getters.인자;
+                 */
+                인자: function(state/* 고정 */){
+                    return state.인자;
+                },
+            },
+        }
+
+        export default store;
+
+
+    작업2-4. index.js
+        // 파일 위치: /src/store/index.js
+
+        import { createStore } from 'vuex';
+
+        // 작성한 모듈을 가져옵니다.
+        import counterStore from '@/store/modules/counterStore.js'
+
+        export default createStore({
+            // actions: {},
+            // mutations: {},
+            // state: {},
+            // getters: {},
+            modules: {
+              // "키: 값", 형태로 저장됩니다.
+              counterStore: counterStore,
+            },
+        });
+
+
+    작업2-5. main.js
+        // 파일 위치: /src/main.js
+
+        import { createApp } from 'vue';
+        import App from './App.vue';
+        import router from './router';
+        import store from './store';
+
+        createApp(App).use(store).use(router).mount('#app');
+
+
+
+    ##################################
+    vue4301 작업3. Vuex 의 store 에서 데이터 가져오는 get 기능 구현하기
+    ----------------------------------
+    vuex로 store 를 만들고 store 의 state에 상태(변수) 등록 한 후
+    store에서 state을 가져오는 get 기능을 구현 한다. <== 같이
+
+    Vuex 헬퍼 메서드들.
+        mapActions(*)
+        mapMutations
+        mapState
+        mapGetters(*)
+
+    mapActions는 store의 actions를 가져오는 헬퍼 메서드로
+    컴포넌트의 methods 에서 사용된다.
+
+    mapGetters는 store의 getters를 가져오는 헬퍼 메서드로
+    컴포넌트의 computed 에서 사용된다.
+
+    mapMutations는 store의 muations 를 가져오는 헬퍼 메서드로
+    컴포넌트의 methods 에서 사용된다.
+    mapMutations 보다는 mapActions 를 사용하는 것을 추천.
+
+    중요하게 봐야할 부분은 mapActions, mapGetters 입니다.
+    ##################################
+
+    3-1. store.counterStore.state 작성
+        vue 인스턴스 data 의 welcome과 counter를 vuex store 로 옮기기.
+        state: {
+            /* vue인스턴스나 컴포넌트의 data 프로퍼티에 해당 */
+            welcome: 'HELLO WORLD VUEX',
+            counter: 10,
+        },
+
+    3-2. store.counterStore.getters 작성
+        getters: {
+            /* state 변경 정보를 컴포넌트에 전달하는 역활.
+            * 메서드로 만들어야 하며 메서드명은 state 의 이름을 그대로 사용
+            * 첫번째인자: 무조건 state
+            * 컴포넌트에서는 computed를 사용하여 store의 state 변경 정보를 자동으로 가져오게 된다.
+            * 예시) message()=> store.getters.인자;
+            */
+            welcome(state /* 고정 */) {
+                return state.welcome;
+            },
+            counter(state /* 고정 */) {
+                return state.counter;
+            },
+        },
+    3-3. Vue4301Comp 컴포넌트의 computed 에서 store.counterStore.getters 값을 가져오도록 작성
+        computed: {
+            ...mapGetters('counterStore', ['welcome', 'counter']),
+        },
+
+
+
+
+    ##################################
+    vue4301 작업4. Vuex 의 store 에 데이터 저장하는 set 기능 구현하기
+    ----------------------------------
+    store를 사용하여 increment 기능을 같이 작성하여 본다. <== 같이
+    ##################################
+    4-1. Vue4301Comp 컴포넌트의 methods의 handlerIncrement 수정.
+
+    methods: {
+        // store.counterStore.actions 가져오기.
+        ...mapActions('counterStore', {
+            // dispatch액션명2: '액션명2',
+            dispatchSetCounter: 'setCounter',
+        }),
+
+        handlerIncrement(e) {
+            console.log(e.target);
+            // this.$data.counter = this.$data.counter + 1;
+            debugger;
+
+            // 버튼을 누르면 store의 action 호출
+            // this.$store.dispatch("액션명", 액션값)
+            this.dispatchSetCounter(+1);
+        },
+    }
+
+    4-2. store.counterStore.actions 수정
+    actions: {
+      /* 왜 actions를 사용하나? 비동기로 외부 함수 호출하기 위해서
+       * actions 에는 메서드만 등록 가능하다.
+       * 첫번째인자: 무조건 mutations로 고정.
+       * 두번째인자: 값. store.dispatch()호출시 넘겨지는 값.
+       */
+      setCounter(mutations /* 고정 */, payload) {
+        debugger;
+        mutations.commit('setCounter', payload);
+      },
+    },
+    4-3. store.counterStore.mutations 수정
+    mutations: {
+      /* 왜 mutations 를 사용하나? state 를 바꾸기 위해서
+       * mutations 에는 메서드만 등록 가능하다.
+       * 첫번째인자: 무조건 state 로 고정.
+       * 두번째인자: 값. mutations.commit() 호출시 넘겨지는 값.
+       * */
+      setCounter(state /* 고정 */, param /* mutations.commit 호출시 넘겨지는 값 */) {
+        debugger;
+        state.counter = state.counter + param;
+      },
+    },
+
+
+
+
+
+    ##################################
+    vue4301 작업5.
+    Vue4301Comp 컴포넌트의 decrement 기능을 각자 작성하여 본다. <== 각자
+    ##################################
+    methods: {
+        // store.counterStore.actions 가져오기.
+        ...mapActions('counterStore', {
+          // dispatch액션명2: '액션명2',
+          dispatchSetCounter: 'setCounter',
+        }),
+
+        handlerIncrement(e) {
+          console.log(e.target);
+          // this.$data.counter = this.$data.counter + 1;
+          debugger;
+          this.dispatchSetCounter(+1);
+        },
+
+        handlerDecrement(e) {
+          console.log(e.target);
+          // this.$data.counter = this.$data.counter - 1;
+          debugger;
+          this.dispatchSetCounter(-1);
+        },
+      },
+
+
+
+
+    ##################################
+    vue4301 작업6.
+    axios 를 사용하여 비동기로 외부 함수를 호출하는 기능을 추가하여 본다.
+    ----------------------------------
+    외부 함수 호출 기능을 추가하기 위해서는 서버 기능이 필요합니다.
+
+    GET 기능 구현.
+    axios 로 "http://localhost:5050/counter" 호출하여 counter의 현재 값을 가져오는 기능을 작성한다.
+
+    SET 기능 구현.
+    axios 로 "http://localhost:5050/counter?step=숫자" 호출하여  counter 값을 변경하는 기능을 작성한다.
+
+    ##################################
+    </xmp>
+
+    <div style="margin: 0 0 0 62px;">
+    <div>
+        <p style="color: red; font-style: bold;">
+            6-1. 실행 전에  서버를 실행하세요.
+            <a href="#" onClick="window.open('../../ES2015문법/ap09.서버통신/ap09-03.Node서버실행.html','Node서버실행','width=900,height=650,toolbar=no,menubar=no,scrollbars=no,resizable=yes');return false;" rel="nofollow">Node서버실행</a>
+        </p>
+        <p>&nbsp;</p>
+        <p>
+            2. 브라우저로 서버 실행 여부 확인<br>
+            <a href="http://localhost:5050/counter" target="_blank">http://localhost:5050/counter</a>   ==> 현재값 가져오기<br>
+            <a href="http://localhost:5050/counter?step=1" target="_blank">http://localhost:5050/counter?step=1</a>   ==> 1 씩 증가<br>
+            <a href="http://localhost:5050/counter?step=-1" target="_blank">http://localhost:5050/counter?step=-1</a>   ==> -1 씩 증가<br>
+            <a href="http://localhost:5050/counter?step=10" target="_blank">http://localhost:5050/counter?step=10</a>  ==> 10 씩 증가<br>
+            <a href="http://localhost:5050/counter?step=-10" target="_blank">http://localhost:5050/counter?step=-10</a>  ==> -10 씩 증가<br>
+        </p>
+    </div>
+    </div>
+
+    <xmp>
+    6-2. counterStore.js 파일 수정
+    // 파일 위치: /src/store/modules/counterStore.js
+
+    const store = {
+        actions: {
+            /* 왜 actions를 사용하나? 비동기로 외부 함수 호출하기 위해서
+                * actions 에는 메서드만 등록 가능하다.
+                * 첫번째인자: 무조건 mutations로 고정.
+                * 두번째인자: 값. store.dispatch()호출시 넘겨지는 값.
+                */
+            setCounter( mutations/* 고정 */, payload ){
+                console.log(payload);
+                debugger;
+
+                // 비동기 함수 호출 대체
+                axios({
+                    url: "http://localhost:5050/counter",  // 호출되는 서버 주소.
+                    method: "get",       // request method: get, post, delete, put
+                    params: { step: payload },  // 서버로 보내는 데이터. 예시) { data1:"test1", data2:"test2" }
+                    timeout: 30000,    // 최대 대기 시간: 30초. 30초 이상이 되면 fail 부분이 실행됨.
+                    responseType: "json",  // response로 넘어오는 데이터 형태: text, html, xml, json, jsonp, script
+                })
+                .then( (res) => {
+                    console.log(res.data);
+                    // this.$data.message = res.data;
+                    debugger;
+                    mutations.commit("setCounter", res.data );
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            },
+            getCounter( mutations/* 고정 */, payload ){
+                console.log(payload);
+                debugger;
+
+                // 비동기 함수 호출 대체
+                axios({
+                    url: "http://localhost:5050/counter",  // 호출되는 서버 주소.
+                    method: "get",       // request method: get, post, delete, put
+                    params: { },  // 서버로 보내는 데이터. 예시) { data1:"test1", data2:"test2" }
+                    timeout: 30000,    // 최대 대기 시간: 30초. 30초 이상이 되면 fail 부분이 실행됨.
+                    responseType: "json",  // response로 넘어오는 데이터 형태: text, html, xml, json, jsonp, script
+                })
+                .then( (res) => {
+                    console.log(res.data);
+                    // this.$data.message = res.data;
+                    debugger;
+                    mutations.commit("getCounter", res.data );
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            },
+        },
+        mutations: {
+            /* 왜 mutations 를 사용하나? state 를 바꾸기 위해서
+                * mutations 에는 메서드만 등록 가능하다.
+                * 첫번째인자: 무조건 state 로 고정.
+                * 두번째인자: 값. mutations.commit() 호출시 넘겨지는 값.
+                * */
+            setCounter(state/* 고정 */, param/* mutations.commit 호출시 넘겨지는 값 */){
+                //state 변경
+                console.log(param);
+                debugger;
+                // this.$data.counter = this.$data.counter + param;
+                // state.counter = state.counter + param;
+                state.counter = param;
+            },
+            getCounter(state/* 고정 */, param/* mutations.commit 호출시 넘겨지는 값 */){
+                //state 변경
+                console.log(param);
+                debugger;
+                // this.$data.counter = this.$data.counter + param;
+                // state.counter = state.counter + param;
+                state.counter = param;
+            },
+        },
+        state: {
+            /* vue인스턴스나 컴포넌트의 data 프로퍼티에 해당 */
+            welcome: 'HELLO WORLD VEUX',
+            counter: 10,
+        },
+        getters: {
+            /* state 변경 정보를 컴포넌트에 전달하는 역활.
+                * 메서드로 만들어야 하며 메서드명은 state 의 이름을 그대로 사용
+                * 첫번째인자: 무조건 state
+                * 컴포넌트에서는 computed를 사용하여 store의 state 변경 정보를 자동으로 가져오게 된다.
+                * 예시) message()=> store.getters.인자;
+                */
+            welcome: function(state/* 고정 */){
+                return state.welcome;
+            },
+            counter: function(state/* 고정 */){
+                return state.counter;
+            },
+        },
+    }
+
+    6-3. Vue4301Comp.vue 파일 수정
+        // 파일 위치: src/components/vue4301/Vue4301Comp.vue
+
+        mounted() {
+            console.log('mounted');
+            /* vuex 를 사용하는 경우 */
+            // this.$store.dispatch('액션명', payload);
+            this.dispatchGetCounter();
+        },
+
+
+    </xmp>
+</body>
+
+</html>
