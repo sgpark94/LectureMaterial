@@ -1,23 +1,32 @@
-<style scoped></style>
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+</style>
 
 <template>
-  <!-- 부모 컴포넌트 -->
   <div id="app">
-    자식 컴포넌트에서 받은 값: {{ mesg }}
-    <!-- emit : 자식 comp -> 부모 comp로 데이터 전달. -->
-    <Vue34exParent />
+    <h2>{{ msg }}</h2>
+    <child1 />
+    <child2 />
   </div>
 </template>
 
 <script>
-import Vue34exParent from '../components/vue34ex/Vue34exParent.vue';
+import Vue3701Comp1 from '../components/vue3701/CompChild1.vue';
+import Vue3701Comp2 from '../components/vue3701/CompChild2.vue';
+
 export default {
   /* pdtmc^2w */
   props: [],
   data() {
     /* 컴포넌트 안에서 사용되는 변수 등록. 개별 변수 */
     return {
-      mesg: null,
+      msg: 'Welcome to Your Vue.js App',
     };
   },
   //template: ``,
@@ -27,7 +36,8 @@ export default {
   components: {
     /* 전역 컴포넌트는 등록하지 않는다. */
     /* 지역 컴포넌트나 파일 컴포넌트이면 등록해야 한다 . 예시) "태그명" : 컴포넌트명 */
-    Vue34exParent,
+    child1: Vue3701Comp1,
+    child2: Vue3701Comp2,
   },
   computed: {
     /* 자동처리 + 동기식. 메서드로 작성. return 필수. data 와 공존 불가 */

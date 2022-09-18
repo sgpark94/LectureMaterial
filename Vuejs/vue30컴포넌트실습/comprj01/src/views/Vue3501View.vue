@@ -1,23 +1,22 @@
 <style scoped></style>
 
 <template>
-  <!-- 부모 컴포넌트 -->
-  <div id="app">
-    자식 컴포넌트에서 받은 값: {{ mesg }}
-    <!-- emit : 자식 comp -> 부모 comp로 데이터 전달. -->
-    <Vue34exParent />
+  <div>
+    Vue3501View
+    <Vue3501Comp></Vue3501Comp>
   </div>
 </template>
 
 <script>
-import Vue34exParent from '../components/vue34ex/Vue34exParent.vue';
+import Vue3501Comp from '../components/vue3501/Vue3501Comp.vue';
+
 export default {
   /* pdtmc^2w */
   props: [],
   data() {
     /* 컴포넌트 안에서 사용되는 변수 등록. 개별 변수 */
     return {
-      mesg: null,
+      message: null,
     };
   },
   //template: ``,
@@ -27,7 +26,7 @@ export default {
   components: {
     /* 전역 컴포넌트는 등록하지 않는다. */
     /* 지역 컴포넌트나 파일 컴포넌트이면 등록해야 한다 . 예시) "태그명" : 컴포넌트명 */
-    Vue34exParent,
+    Vue3501Comp,
   },
   computed: {
     /* 자동처리 + 동기식. 메서드로 작성. return 필수. data 와 공존 불가 */

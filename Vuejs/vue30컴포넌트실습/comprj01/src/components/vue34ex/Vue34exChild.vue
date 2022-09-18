@@ -3,18 +3,17 @@
 <template>
   <div class="component-child">
     Child counter : {{ num }} <br />
-    <button name="child" v-on:click="addCounter">+</button>
-    <button name="child" v-on:click="subCounter">-</button>
+    <button name="child" @click="addCounter">+</button>
+    <button name="child" @click="subCounter">-</button>
   </div>
 </template>
 
 <script>
 export default {
   /* pdtmc^2w */
-  props: ['num'],
+  props: ['num'], // 부모에서 받은 값.
   data() {
     /* 컴포넌트 안에서 사용되는 변수 등록. 개별 변수 */
-    /* data 프로퍼티 값 변경시 this.set(object, key, value) 을 사용 */
     return {};
   },
   //template: ``,
@@ -22,14 +21,11 @@ export default {
     /* 이벤트 핸들러 등록 + 일반 함수 */
     addCounter(e) {
       console.log(e.target);
-      // 부모에게 +1 하라는 이벤트를 발행시켜라.
-      debugger;
+      // 이벤트를 이용하여 부모의 상태값 변경 (emit)
       this.$emit('add-counter', +1);
     },
     subCounter(e) {
       console.log(e.target);
-      // 부모에게 -1 하라는 이벤트를 발행시켜라.
-      debugger;
       this.$emit('sub-counter', -1);
     },
   },

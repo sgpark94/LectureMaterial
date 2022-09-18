@@ -6,6 +6,8 @@ import Vue3104View from '../views/Vue3104View.vue';
 import Vue31exView from '../views/Vue31exView.vue';
 import Vue3403View from '../views/Vue3403View.vue';
 import Vue34exView from '../views/Vue34exView.vue';
+import Vue3501View from '../views/Vue3501View.vue';
+import Vue3701View from '../views/Vue3701View.vue';
 
 Vue.use(VueRouter);
 
@@ -53,6 +55,18 @@ const routes = [
     path: '/vue34ex',
     name: 'vue34ex',
     component: Vue34exView,
+  },
+  {
+    /* url 과 컴포넌트 연결 */
+    path: '/vue3501',
+    name: 'vue3501',
+    component: Vue3501View,
+  },
+  {
+    /* url 과 컴포넌트 연결 */
+    path: '/vue3701',
+    name: 'vue3701',
+    component: Vue3701View,
   },
 ];
 

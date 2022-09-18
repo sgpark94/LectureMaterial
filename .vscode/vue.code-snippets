@@ -145,9 +145,7 @@
     "Vue File Component": {
         "prefix": "vuefc",
         "body": [
-            "<style scoped>",
-            "    ",
-            "</style>",
+            "<style scoped></style>",
             "",
             "<template>",
             "    ",
