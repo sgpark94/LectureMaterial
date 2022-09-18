@@ -44,6 +44,7 @@ import TodoFooter from '../components/todo/TodoFooter.vue';
 
 // vuex 라이브러리에서 mapActions, mapMutations, mapState, mapGetters 함를 가져옵니다.
 // import { mapActions, mapMutations, mapState, mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   /* pdtmc^2w */
@@ -52,16 +53,26 @@ export default {
     /* 컴포넌트 안에서 사용되는 변수 등록. 개별 변수 */
     /* data 프로퍼티 값 변경시 this.set(object, key, value) 을 사용 */
     return {
-      todoItems: [
-        { id: 1, todo: '영화보기', done: false },
-        { id: 2, todo: '주말 산책', done: true },
-        { id: 3, todo: 'ES6 학습', done: false },
-        { id: 4, todo: '잠실 야구장', done: false },
-      ],
+      // todoItems: [
+      //   { id: 1, todo: '영화보기', done: false },
+      //   { id: 2, todo: '주말 산책', done: true },
+      //   { id: 3, todo: 'ES6 학습', done: false },
+      //   { id: 4, todo: '잠실 야구장', done: false },
+      // ],
     };
   },
   //template: ``,
   methods: {
+    // mapActions Vuex 헬퍼 메서드를 이용해서
+    // todoStore의 액션 메서드 가져오기
+    // 사용법 : ...mapActions('모듈명', { dispatch액션명1: '액션명1', dispatch액션명2: '액션명2' })
+    ...mapActions('todoStore', {
+      dispatchClearAll: 'clearAll',
+      dispatchDoneToggle: 'doneToggle',
+      dispatchRemoveTodo: 'removeTodo',
+      dispatchAddTodo: 'addTodo',
+      dispatchGetTodo: 'getTodo',
+    }),
     /* 이벤트 핸들러 등록 + 일반 함수 */
     /* vuex 를 사용하는 경우
       mapActions 는 store의 actions 를 가져옵니다.
@@ -74,11 +85,11 @@ export default {
       */
     clearAll() {
       debugger;
-      this.todoItems = [];
+      // this.todoItems = [];
+      this.dispatchClearAll();
     },
     addTodo(newTodoItem) {
       debugger;
-
       // max id 구하기 -> map, reduce를 사용하여 newid 만들기
       // todoItems 추가할 객체 만들기
       // 배열에 추가
@@ -88,7 +99,6 @@ export default {
           if (pValue > cValue) return pValue;
           return cValue;
         });
-
       const newTodo = {
         id: maxid + 1,
         todo: newTodoItem,
@@ -99,12 +109,13 @@ export default {
     doneToggle(id) {
       debugger;
       // 새로운 todo 만들어서 todoItems에 넣어준다.
-      const newTodos = this.todoItems.map((item) => {
-        // 새로운 배열 생성.
-        if (item.id === id) item.done = !item.done;
-        return item;
-      });
-      this.todoItems = newTodos;
+      // const newTodos = this.todoItems.map((item) => {
+      //   // 새로운 배열 생성.
+      //   if (item.id === id) item.done = !item.done;
+      //   return item;
+      // });
+      // this.todoItems = newTodos;
+      this.dispatchDoneToggle(id);
     },
     removeTodo(id) {
       const newTodos = this.todoItems.filter((item, index, array) => {
@@ -114,7 +125,6 @@ export default {
         return true;
       });
       this.todoItems = newTodos;
-
       // 이벤트 취소
       window.event.stopPropagation(); // 인자가 없기 떄문에 window로 넣은것.
       // = window.event.preventDefault();
@@ -139,6 +149,7 @@ export default {
       2) store.모듈명.getters 이름 그대로 사용하기(추천방식)
          ...mapGetters('모듈명', ['게터명1', '게터명2']),
       */
+    ...mapGetters('todoStore', ['todoItems']),
   },
   watch: {
     /* 자동처리 + 비동기식. data 에 등록된 프로퍼티(변수) 모니터링. 메서드로 작성. 매개변수 필수. 외부 api 호출을 위해서 사용 */
