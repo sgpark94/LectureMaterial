@@ -29,8 +29,11 @@ let color_lawn = {
 };
 
 function rateColor(color, rating) {
+  debugger;
   color.rating = rating;
   return color;
 }
 
-console.log(rateColor(color_lawn, 5).rating);
+const newColor = rateColor(color_lawn, 5);
+debugger;
+console.log(newColor.rating);
