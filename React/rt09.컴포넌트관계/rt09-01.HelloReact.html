@@ -73,7 +73,7 @@
         /*  import styled, { css } from 'styled-components' */
     </script>
     <script type="text/babel">
-        const { useState } = React;
+        const { useState, useCallback } = React;
 
         // 2. 컴포넌트 화면에 붙이기.
         ReactDOM.render( // 화면에 HelloContainer 를 #app에 붙이기.
@@ -82,16 +82,37 @@
 
         // 1. 컴포넌트 만들기
         // 부모 컴포넌트
-        function HelloContainer() {
+        function HelloContainer({ ...props }) {
+            // 부모의 state 값을 만들어주었다.
+            const [ mesgOfProps, setMesgOfProps] = useState("부모에 넘겨준 값");
+
             // 화면 만드는 부분
+            const callback = useCallback((param) => {
+                debugger;
+                setMesgOfProps('자식에서 값을 바꿈.');
+            }, [ /* 조건 제어: 메서드와 연관되는 상태(변수)명들을 기술 */ mesgOfProps ]);
             return (
-                <HelloReact mesgOfProps={"Hello, Props!!!"} />
+                <div>
+                    <HelloReact
+                        mesgOfProps={ mesgOfProps }
+                        callback={ callback }
+                    />
+                </div>
             )
         }
 
         // 자식 컴포넌트
-        function HelloReact({ mesgOfProps }) {
+        function HelloReact({ mesgOfProps, callback }) {
             const [ mesgOfState, setMesgOfState ] = useState('Hello, State!!!');
+
+            // 이벤트 핸들러 작성.
+            const handler = () => {
+                // 이벤트 핸들러는 화살표 함수로 만든다
+                console.log(window.event.target);
+                debugger;
+                // 부모 컨테이너의 콜백 메서드 호출. HelloContainer.callback();
+                callback();
+            };
             return (
                 <div>
                     도전1. Hello, React!!!
@@ -99,6 +120,8 @@
                     도전2. { mesgOfState }
                     <br />
                     도전3. { mesgOfProps }
+                    <hr />
+                    <button onClick={ handler }>부모의 callback 메서드 호출</button>
                 </div>
             )
         }
