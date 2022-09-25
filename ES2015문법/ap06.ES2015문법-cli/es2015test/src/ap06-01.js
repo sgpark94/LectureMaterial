@@ -1,13 +1,9 @@
 'use strict';
 
 const name = 'world';
-console.log('Hello '.concat(name));
+console.log(`Hello ${name}`);
 
-const getMessage = function getMessage(params) {
-  console.log('Hello '.concat(params));
+const getMessage = (params) => {
+    console.log(`Hello ${params}`);
 };
-
 getMessage('sejoong');
-
-const str = 'aaaa';
-console.log(str);
