@@ -120,52 +120,6 @@ const StyledTodoContainer = styled.div`
     -webkit-transform: scale(1.1);
     transform: scale(1.1);
   }
-
-  ul {
-    list-style-type: none;
-    padding-left: 0px;
-    margin-top: 0;
-    text-align: left;
-  }
-
-  li {
-    display: flex;
-    min-height: 50px;
-    height: 50px;
-    line-height: 50px;
-    margin: 0.5rem 0;
-    padding: 0 0.9rem;
-    background: white;
-    border-radius: 5px;
-  }
-
-  li.checked {
-    background: #bbb;
-    color: #fff;
-    text-decoration: line-through;
-  }
-
-  .checkBtn {
-    line-height: 45px;
-    color: #62acde;
-    margin-right: 5px;
-  }
-
-  .removeBtn {
-    margin-left: auto;
-    color: #de4343;
-  }
-
-  .list-enter-active,
-  .list-leave-active {
-    transition: all 1s;
-  }
-
-  .list-enter,
-  .list-leave-to {
-    opacity: 0;
-    transform: translateY(30px);
-  }
 `;
 
 function TodoContainer({ ...props }) {
@@ -255,6 +209,24 @@ function TodoContainer({ ...props }) {
       todoItems,
     ],
   );
+  const callbackDoneToggle = useCallback(
+    // 상태값이 변경될 경우 메서드를 다시 만드는 걸 목적으로 한다.
+    (id) => {
+      // state 변경
+      debugger;
+
+      const newTodos = todoItems.map((item) => {
+        if (item.id === id) item.done = !item.done;
+        return item;
+      });
+
+      setTodoItems(newTodos); // todoItems = newTodos;
+    },
+    [
+      /* 연관배열: 메서드와 연관되는 상태(변수)명들을 기술 */
+      todoItems,
+    ],
+  );
 
   // 이벤트 핸들러 작성.
   const handler = (e) => {
@@ -275,7 +247,10 @@ function TodoContainer({ ...props }) {
         <TodoInput />
 
         {/* <!-- TodoList --> */}
-        <TodoList />
+        <TodoList
+          todoItems={todoItems}
+          callbackDoneToggle={callbackDoneToggle}
+        />
 
         {/* <!-- TodoFooter --> */}
         <TodoFooter callbackClearAll={callbackClearAll} />
