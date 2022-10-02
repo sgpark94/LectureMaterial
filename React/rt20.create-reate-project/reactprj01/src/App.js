@@ -1,10 +1,10 @@
-import CompStyle from './containers/styled/CompStyle';
+import PageHome from './pages/PageHome';
 import './App.css';
 
 function App() {
   return (
     <div>
-      <CompStyle></CompStyle>
+      <PageHome />
     </div>
   );
 }

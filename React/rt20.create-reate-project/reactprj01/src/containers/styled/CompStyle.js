@@ -29,12 +29,22 @@ const StyledCompStyle = styled.div`
 // import styled, { css } from 'styled-components';
 const StyledCircle = styled.div`
   /* https://styled-components.com/docs/basics#adapting-based-on-props */
-  width: 10rem;
-  height: 10rem;
+  width: 5rem;
+  height: 5rem;
   background: ${(props) => {
     return props.color || 'black';
   }};
   border-radius: 50%;
+
+  ${(props) => {
+    return (
+      props.huge &&
+      css`
+        width: 10rem;
+        height: 10rem;
+      `
+    );
+  }}
 `;
 
 function CompStyle({ ...props }) {
@@ -48,6 +58,9 @@ function CompStyle({ ...props }) {
       <hr />
       <StyledCircle color={'blue'} />
       <hr />
+      <StyledCircle color={'aqua'} huge={false} />
+      <hr />
+      <StyledCircle color={'red'} huge={true} />
     </StyledCompStyle>
   );
 }
