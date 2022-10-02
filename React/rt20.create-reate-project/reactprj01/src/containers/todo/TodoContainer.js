@@ -19,107 +19,6 @@ import TodoFooter from './components/TodoFooter';
 
 const StyledTodoContainer = styled.div`
   /* styled 설정. https://styled-components.com/docs/basics#adapting-based-on-props */
-
-  button {
-    border-style: groove;
-  }
-
-  input {
-    border-style: groove;
-    width: 200px;
-  }
-
-  .shadow {
-    box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.03);
-  }
-
-  input:focus {
-    outline: none;
-  }
-
-  .inputBox {
-    background: white;
-    height: 50px;
-    line-height: 50px;
-    border-radius: 5px;
-  }
-
-  .inputBox input {
-    border-style: none;
-    font-size: 0.9rem;
-  }
-
-  .addContainer {
-    float: right;
-    background: linear-gradient(to right, #6478fb, #8763fb);
-    display: inline-block;
-    width: 3rem;
-    border-radius: 0 5px 5px 0;
-  }
-
-  .addBtn {
-    color: white;
-    vertical-align: middle;
-  }
-
-  .closeModalBtn {
-    color: #62acde;
-  }
-
-  .modal-mask {
-    position: fixed;
-    z-index: 9998;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: table;
-    transition: opacity 0.3s ease;
-  }
-
-  .modal-wrapper {
-    display: table-cell;
-    vertical-align: middle;
-  }
-
-  .modal-container {
-    width: 300px;
-    margin: 0px auto;
-    padding: 20px 30px;
-    background-color: #fff;
-    border-radius: 2px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-    transition: all 0.3s ease;
-    font-family: Helvetica, Arial, sans-serif;
-  }
-
-  .modal-header h3 {
-    margin-top: 0;
-    color: #62acde;
-  }
-
-  .modal-body {
-    margin: 20px 0;
-  }
-
-  .modal-default-button {
-    float: right;
-  }
-
-  .modal-enter {
-    opacity: 0;
-  }
-
-  .modal-leave-active {
-    opacity: 0;
-  }
-
-  .modal-enter .modal-container,
-  .modal-leave-active .modal-container {
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
-  }
 `;
 
 function TodoContainer({ ...props }) {
@@ -207,6 +106,38 @@ function TodoContainer({ ...props }) {
       todoItems,
     ],
   );
+  const callbackAddTodo = useCallback(
+    // 상태값이 변경될 경우 메서드를 다시 만드는 걸 목적으로 한다.
+    (value) => {
+      // state 변경
+      debugger;
+
+      // setTodoItems는 todoItems 상태를 바꾸기 위한 setter 메서드
+      // 삭제 기능 추가
+      const maxid =
+        todoItems &&
+        todoItems
+          .map((item) => {
+            return item.id;
+          })
+          .reduce((pValue, cValue) => {
+            return pValue > cValue ? pValue : cValue;
+          }, 0); // 4
+
+      const newTodo = {
+        id: maxid + 1,
+        todo: value,
+        done: false,
+      };
+
+      // 배열에 추가. todoItems = [...todoItems, newTodo]
+      setTodoItems([...todoItems, newTodo]); // todoItems = [...todoItems, newTodo]
+    },
+    [
+      /* 연관배열: 메서드와 연관되는 상태(변수)명들을 기술 */
+      todoItems,
+    ],
+  );
 
   // 이벤트 핸들러 작성.
   const handler = (e) => {
@@ -224,7 +155,7 @@ function TodoContainer({ ...props }) {
         </header>
 
         {/* <!-- TodoInput --> */}
-        <TodoInput />
+        <TodoInput callbackAddTodo={callbackAddTodo} />
 
         {/* <!-- TodoList --> */}
         <TodoList
