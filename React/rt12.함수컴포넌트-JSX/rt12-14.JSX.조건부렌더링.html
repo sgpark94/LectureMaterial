@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible"
+      content="ie=edge" />
     <title>조건부 렌더링</title>
 
-    <link rel="stylesheet" href="../css/reset.css" />
-</head>
+    <link rel="stylesheet"
+      href="../css/reset.css" />
+  </head>
 
-<body>
+  <body>
     <xmp>
         조건부 렌더링
 
@@ -29,5 +32,47 @@
     <hr />
 
     <div id="app"></div>
-</body>
+
+    <script src="https://unpkg.com/@babel/standalone/babel.js"
+      crossorigin="anonymous">
+        /* 자바스크립트로 컴파일러. ES6-->ES5, JSX-->ES5 */
+      </script>
+    <script src="http://unpkg.com/react@17/umd/react.development.js"
+      crossorigin="anonymous">
+        /* import React, { Component, PureComponent } from 'react' */
+      </script>
+    <script src="http://unpkg.com/react-dom@17/umd/react-dom.development.js"
+      crossorigin="anonymous">
+        /* import ReactDOM from 'react-dom' */
+      </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.8.1/prop-types.js"
+      crossorigin="anonymous">
+      </script>
+    <script src="http://unpkg.com/react-is@17/umd/react-is.development.js"
+      crossorigin="anonymous">
+      </script>
+    <script src="http://unpkg.com/styled-components@5/dist/styled-components.js"
+      crossorigin="anonymous">
+        /*  import styled, { css } from 'styled-components' */
+      </script>
+    <script type="text/babel">
+      const { useState, useEffect, useRef, useCallback, useMemo, useReducer, Fragment } = React;
+      ReactDOM.render(<Greeting isLoggedIn={false} />, document.getElementById('app'));
+      // rfcp
+      function Greeting({ isLoggedIn }) {
+
+        // JSX로 화면 만들기. 조건부 렌더링: https://ko.reactjs.org/docs/conditional-rendering.html
+        return (
+          <div>
+            {isLoggedIn && ( // isLoggedIn이 true이면 && 뒤 부분이 실행된다. (실무에서 유지,보수 할 때 편하다. else 문은 없고 if 문 있다고 생각하기.)
+              <div>UserGreeting</div>
+            )}
+            {!isLoggedIn && ( // isLoggedIn이 false이면 && 뒤 부분이 실행된다.
+              <div>GuestGreeting</div>
+            )}
+          </div>
+        )
+      }
+    </script>
+  </body>
 </html>
