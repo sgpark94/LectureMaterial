@@ -15,6 +15,7 @@ import { Routes, Route, NavLink } from 'react-router-dom';
 
 import HomeContainer from '../containers/home/HomeContainer';
 import CompStyle from '../containers/styled/CompStyle';
+import TodoContainer from '../containers/todo/TodoContainer';
 
 const StyledPageHome = styled.div`
   /* styled 설정. https://styled-components.com/docs/basics#adapting-based-on-props */
@@ -37,10 +38,14 @@ function PageHome({ ...props }) {
         <li>
           <NavLink to="/styled">styled</NavLink>
         </li>
+        <li>
+          <NavLink to="/todo">todo</NavLink>
+        </li>
       </ul>
       <Routes>
         <Route path="/" element={<HomeContainer />} />
         <Route path="/styled" element={<CompStyle />} />
+        <Route path="/todo" element={<TodoContainer />} />
       </Routes>
     </StyledPageHome>
   );
