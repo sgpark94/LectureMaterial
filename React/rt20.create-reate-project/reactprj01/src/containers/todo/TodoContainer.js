@@ -15,6 +15,7 @@ import styled, { css } from 'styled-components';
 import TodoHeader from './components/TodoHeader';
 import TodoInput from './components/TodoInput';
 import TodoList from './components/TodoList';
+import TodoFooter from './components/TodoFooter';
 
 const StyledTodoContainer = styled.div`
   /* styled 설정. https://styled-components.com/docs/basics#adapting-based-on-props */
@@ -165,20 +166,6 @@ const StyledTodoContainer = styled.div`
     opacity: 0;
     transform: translateY(30px);
   }
-
-  .clearAllContainer {
-    width: 16rem;
-    height: 50px;
-    line-height: 50px;
-    background-color: white;
-    border-radius: 5px;
-    margin: 0 auto;
-  }
-
-  .clearAllBtn {
-    color: #e20303;
-    display: block;
-  }
 `;
 
 function TodoContainer({ ...props }) {
@@ -255,6 +242,19 @@ function TodoContainer({ ...props }) {
       /* 연관배열: 메서드와 연관되는 상태(변수)명들을 기술 */
     ],
   );
+  const callbackClearAll = useCallback(
+    // 상태값이 변경될 경우 메서드를 다시 만드는 걸 목적으로 한다.
+    (param) => {
+      // state 변경
+      debugger;
+
+      setTodoItems([]);
+    },
+    [
+      /* 연관배열: 메서드와 연관되는 상태(변수)명들을 기술 */
+      todoItems,
+    ],
+  );
 
   // 이벤트 핸들러 작성.
   const handler = (e) => {
@@ -272,73 +272,13 @@ function TodoContainer({ ...props }) {
         </header>
 
         {/* <!-- TodoInput --> */}
-        <div className="inputBox shadow">
-          <input type="text" placeholder="Type what you have to do" />
-          <span className="addContainer">
-            <i aria-hidden="true" className="addBtn fas fa-plus"></i>
-          </span>
-
-          <div
-            className="modal-mask"
-            style={{
-              display: 'none',
-            }}
-          >
-            <div className="modal-wrapper">
-              <div className="modal-container">
-                <div className="modal-header">
-                  <h3 slot="header">경고</h3>
-                </div>
-
-                <div className="modal-footer">
-                  <span>
-                    할 일을 입력하세요.
-                    <i className="closeModalBtn fas fa-times" aria-hidden="true"></i>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <TodoInput />
 
         {/* <!-- TodoList --> */}
-        <section>
-          <ul>
-            <li>
-              <i aria-hidden="true" className="checkBtn fas fa-check"></i>
-              영화보기
-              <span type="button" className="removeBtn">
-                <i aria-hidden="true" className="far fa-trash-alt"></i>
-              </span>
-            </li>
-            <li className="checked">
-              <i aria-hidden="true" className="checkBtn fas fa-check"></i>
-              주말 산책
-              <span type="button" className="removeBtn">
-                <i aria-hidden="true" className="far fa-trash-alt"></i>
-              </span>
-            </li>
-            <li>
-              <i aria-hidden="true" className="checkBtn fas fa-check"></i>
-              ES6 학습
-              <span type="button" className="removeBtn">
-                <i aria-hidden="true" className="far fa-trash-alt"></i>
-              </span>
-            </li>
-            <li>
-              <i aria-hidden="true" className="checkBtn fas fa-check"></i>
-              잠실 야구장
-              <span type="button" className="removeBtn">
-                <i aria-hidden="true" className="far fa-trash-alt"></i>
-              </span>
-            </li>
-          </ul>
-        </section>
+        <TodoList />
 
-        {/* <!-- TodoHeader --> */}
-        <div className="clearAllContainer">
-          <span className="clearAllBtn">Clear All</span>
-        </div>
+        {/* <!-- TodoFooter --> */}
+        <TodoFooter callbackClearAll={callbackClearAll} />
       </div>
     </StyledTodoContainer>
   );
